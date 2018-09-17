@@ -49,20 +49,6 @@ public class Game {
     }
 
     /**
-     * Choix du chiffre pour la longueur de la combi
-     * @param nC
-     */
-
-    /*public void displayCombinaison(int nC) {
-        if (nC >= 1 && nC <=10) {
-            System.out.println("Vous avez choisi un nombre à " + nC + " chiffres");
-        } else {
-            System.out.println("Je n'ai pas compris votre réponse. Merci de mettre un chiffre valide\n");
-            numberRun();
-        }
-    }*/
-
-    /**
      * Génère un nombre aléatoire de nB chiffre(s)
      * @param nB
      */
@@ -75,12 +61,15 @@ public class Game {
         //this.displayPropose(nombre);
     }
 
+    /**
+     *
+     * @param nB
+     */
 
     public void displayPropose(int nB) {
         int m;
         int i;
         int essai = 5;
-        String str = "";
         System.out.println("Vous avez le droit à 5 tentatives");
         System.out.print("Merci faire votre proposition : ");
         do {
@@ -88,9 +77,8 @@ public class Game {
             System.out.println();
             System.out.println("Il vous reste encore " + essai + " tentatives");
             m = sc.nextInt();
-            String F = str + nB;
-            String G = str + m;
-            //Integer.toString(m);
+            String F = String.valueOf(nB);
+            String G = String.valueOf(m);
             //System.out.println("Combinaison secrète : " + nB);
             System.out.print("Votre proposition : " + m + " -> réponse : ");
             for (i = 0; i < F.length(); i++) {
@@ -101,11 +89,8 @@ public class Game {
                 } else if (G.charAt(i) > F.charAt(i)) {
                     System.out.print("-");
                 }
-
             }
             essai--;
-
-
         } while (m != nB && essai != 0);
         if (m == nB){
             System.out.println();
@@ -113,10 +98,12 @@ public class Game {
         } else {
             System.out.println();
             System.out.println("Malheureusement vous n'avez pas trouvé la bonne combinaison qui était :  "  + nB);
-
         }
-
     }
+
+    /**
+     * 
+     */
 
     public void retry(){
 
