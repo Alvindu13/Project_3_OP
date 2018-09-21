@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
@@ -167,6 +168,8 @@ public class Game {
     public void randomColour() {
 
         int s = 0;
+        int OKLM = 5;
+        int indice = 0;
         int counter = 0;
         char[] colours1 = {'R', 'J', 'V', 'B', 'N', 'G'};
         char[] randomColours = new char[nB];
@@ -181,185 +184,44 @@ public class Game {
             randomColours[k] = colours1[nomb];
             System.out.print(randomColours[k]);
         }
-
-            /*System.out.println();
-            System.out.println("Vous avez le droit à 5 essais :");
-            Scanner nk = new Scanner(System.in);
-            String response = nk.nextLine();
-
-            for (int jk = 0; jk < nB; jk++) {
-                responseS[jk] = response.charAt(jk);
-            }
-
-            while (response.length() != nB) {
-                System.out.println("Merci de faire une proposition valide : ");
-                randomColour();
-            }*/
-        //char[] testA = {'0', '1', '2', '3', '4'};
-        //char[] testB = {'5', '6', '7', '8', '9'};
         for (int u = 0; u < nB; u++) {
             rrandomColours[u] = randomColours[u];
         }
-
-        //System.out.println(Arrays.toString(responseS));
-        //System.out.println(Arrays.toString(randomColours));
-
-        for (int om = 0; om < 6; om++) {
+        for (int om = 0; om < 5; om++) {
             char[] testA = {'0', '1', '2', '3', '4'};
             char[] testB = {'5', '6', '7', '8', '9'};
             System.out.println();
-            System.out.println("Vous avez le droit à 5 essais :");
+            System.out.println("Il vous reste encore " + essai + " tentatives");
             Scanner nk = new Scanner(System.in);
             String response = nk.nextLine();
-
             for (int jk = 0; jk < nB; jk++) {
                 responseS[jk] = response.charAt(jk);
                 randomColours[jk] = rrandomColours[jk];
+                stock[jk] = responseS[jk];
             }
-
             while (response.length() != nB) {
                 System.out.println("Merci de faire une proposition valide : ");
                 randomColour();
             }
-
             for (int i = 0; i < nB; i++) {
-            /*if (randomColours[i] == responseS[i]) {
-                counter++;
-                s++;
-            }*/
                 for (int o = 0; o < nB; o++) {
-
                     if (randomColours[o] == responseS[i] && o == i) {
                         counter++;
                         s++;
                         responseS[i] = testA[i];
                         randomColours[o] = testB[o];
                     }
-
                 }
-                /*if (randomColours[o] == responseS[i]) {
-
-                    if (randomColours[i] == 'R' && responseS[o] == 'R') {
-                        R++;
-                    } else if (randomColours[i] == 'J' && responseS[o] == 'J') {
-                        J++;
-                    } else if (randomColours[i] == 'V' && responseS[o] == 'V') {
-                        V++;
-                    } else if (randomColours[i] == 'B' && responseS[o] == 'B') {
-                        B++;
-                    } else if (randomColours[i] == 'N' && responseS[o] == 'N') {
-                        N++;
-                    } else if (randomColours[i] == 'G' && responseS[o] == 'G') {
-                        G++;
-                    }
-                    responseS[i] = testA[i];
-                    randomColours[o] = testB[o];
-                    s++;
-
-                    //randomColours[i] == responseS[i]) ;
-                }    // char test = randomColours[i];
-                //char test1 = responseS[o];
-                //if(test == test1)
-                //System.out.println(test + " et " +test1);
-                //
-
-            }
-
-
-            for (int i = 0; i < nB; i++) {
-            /*if (randomColours[i] == responseS[i]) {
-                counter++;
-                s++;
-            }*/
-
             }
             for (int q = 0; q < nB; q++) {
                 for (int r = 0; r < nB; r++) {
-
                     if (randomColours[r] == responseS[q]) {
-
-                        /*if (randomColours[r] == 'R' && responseS[q] == 'R') {
-                            R++;
-                        } else if (randomColours[r] == 'J' && responseS[q] == 'J') {
-                            J++;
-                        } else if (randomColours[r] == 'V' && responseS[q] == 'V') {
-                            V++;
-                        } else if (randomColours[r] == 'B' && responseS[q] == 'B') {
-                            B++;
-                        } else if (randomColours[r] == 'N' && responseS[q] == 'N') {
-                            N++;
-                        } else if (randomColours[r] == 'G' && responseS[q] == 'G') {
-                            G++;
-                        }*/
                         responseS[q] = testA[q];
                         randomColours[r] = testB[r];
                         s++;
                     }
                 }
-
             }
-
-
-            //System.out.println(Arrays.toString(responseS));
-            //System.out.println(Arrays.toString(randomColours));
-
-
-
-
-            /*for (int o = 0; o < response.length(); o++) {
-                responseSS = String.valueOf(responseS[i]);
-                randomColoursSS = String.valueOf(randomColours[o]);
-                if(randomColoursSS.contains(responseSS)) {
-                randomColours = ArrayUtils.remove(randomColours, o);
-                responseS = ArrayUtils.remove(responseS, i);
-                System.out.print(randomColours[o] + " -- ");
-                System.out.print(responseS[i]);
-                j++;
-                } else if (o == response.length() - 1 && randomColours[o] != responseS[i]) {
-                    //ArrayUtils.remove(testRandom, o);
-                    responseS = ArrayUtils.remove(responseS, i);
-
-                }
-
-
-            }
-
-
-        }
-
-
-        System.out.println(Arrays.toString(responseS));
-        System.out.println("test random" + Arrays.toString(randomColours));
-        //responseS = ArrayUtils.remove(responseS, 2);
-        System.out.println(Arrays.toString(responseS));
-
-        for (int i = 0; i < response.length(); i++) {
-            if (randomColours[i] == responseS[i])  {
-                    //randomColours[i] == responseS[i]) {
-                //responseS =  ArrayUtils.remove(responseS, i);
-                //randomColours = ArrayUtils.remove(randomColours, i);
-                counter++;
-            } else {
-                int cal = i + 1;
-                System.out.println("la lettre " + cal + " n'est pas bien placée");
-            }
-            for (int o = 0; o < nB; o++) {
-                if (randomColours[o] == responseS[i]) {
-                    randomColours = ArrayUtils.remove(randomColours, o);
-                    responseS = ArrayUtils.remove(responseS, i);
-                    System.out.print(randomColours[o] + " -- ");
-                    System.out.print(responseS[i]);
-                    j++;
-                } else if (o == nB - 1 && randomColours[o] != responseS[i]) {
-                    //ArrayUtils.remove(testRandom, o);
-                    responseS = ArrayUtils.remove(responseS, i);
-
-                }
-            }
-
-        }*/
-
-
             if (counter == 1) {
                 System.out.print(counter + " bien placé");
             } else {
@@ -384,11 +246,29 @@ public class Game {
 
             counter = 0;
             s = 0;
+            essai--;
+            //System.out.println(OKLM);
+
+            //System.out.println(Arrays.toString(stock));
+            //System.out.println(Arrays.toString(rrandomColours));
+
+            for (indice = 0; indice < stock.length && stock[indice] == rrandomColours[indice]; indice++);
+
+            if (indice == nB){
+                System.out.println();
+                System.out.println("Bravo vous avez trouver la bonne combinaison. C'était bien : ");
+                for (int rep = 0; rep < nB; rep++) {
+                    System.out.print(rrandomColours[rep]);
+                }
+                break;
+            }
         }
 
-        System.out.print("la réponse était  : ");
+        if(indice != nB){
+        System.out.print("Malheureusement, vous n'avez pas trouvé la réponse. La réponse était  : ");
         for (int rep = 0; rep < nB; rep++) {
             System.out.print(rrandomColours[rep]);
+        }
         }
     }
 }
