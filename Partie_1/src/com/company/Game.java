@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Game {
     int nB;
+    int essai = 5;
     String[] colours = {"R - Rouge", "J - Jaune", "V - Vert", "B - Bleu", "N - Noir", "G - Gris"};
     Scanner sc = new Scanner(System.in);
 
@@ -53,7 +54,6 @@ public class Game {
     public void displayPropose(int n) {
         int m;
         int i;
-        int essai = 5;
         System.out.println("Vous avez le droit à 5 tentatives");
         System.out.print("Merci faire votre proposition : ");
         do {
@@ -91,11 +91,12 @@ public class Game {
 
     public void retry() {
 
+        System.out.println();
         System.out.println("Voulez-vous rejouer ? Si oui, veuillez entrer OK. Si non, appuyez sur n'importe quelle touche puis sur entrée");
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
         while (str.contains("OK")) {
-            numberRun();
+            this.numberRun();
         }
         System.out.println("Je vous remercie d'avoir joué. À bientôt ! ");
     }
@@ -105,7 +106,7 @@ public class Game {
      */
     public void gameChoise() {
         System.out.println("Veuillez choisir le jeu que vous voulez lancer : ");
-        String[] gameCh = {"Recherche d'une combinaison de chiffre avec indicateurs +/-", "Recherche d'une combinaison de chiffre ou de couleurs avec indicateurs de placement"};
+        String[] gameCh = {"Recherche d'une combinaison de chiffre avec indicateurs +/-", "Recherche d'une combinaison de couleurs avec indicateurs de placement - Mastermind"};
         for (int i = 0; i < 2; i++) {
             System.out.println(i + 1 + " - " + gameCh[i]);
         }
@@ -120,25 +121,25 @@ public class Game {
                 retry();
                 break;
             case 2:
-                System.out.println("Veuillez proposer un nombre entre 1 et 5 pour déterminer le nombre de case de la combinaison de chiffre ou de couleur à trouver : ");
+                System.out.println("Veuillez proposer un nombre entre 1 et 5 pour déterminer le nombre de case de la combinaison de couleurs à trouver : ");
                 nB = sc.nextInt();
                 availableCommand(nB);
-                System.out.println("Voulez-vous jouer avec des couleurs ou des chiffres ? ");
-                System.out.println("1 - Combinaison de couleurs");
-                System.out.println("2 - Combinaison de chiffres");
-                int nChoise = sc.nextInt();
-                switch (nChoise) {
-                    case 1:
-                        availableColours();
-                        System.out.println();
-                        System.out.println("Rappel : ");
-                        System.out.println("Les couleurs disponibles sont : R - J - V - B - N - G");
-                        randomColour();
-                        break;
-                    case 2:
-                        break;
-                    default:
-                }
+                //System.out.println("Voulez-vous jouer avec des couleurs ou des chiffres ? ");
+                //System.out.println("1 - Combinaison de couleurs");
+                //System.out.println("2 - Combinaison de chiffres");
+                //int nChoise = sc.nextInt();
+                //switch (nChoise) {
+                //case 1:
+                availableColours();
+                System.out.println();
+                System.out.println("Rappel : ");
+                System.out.println("Les couleurs disponibles sont : R - J - V - B - N - G");
+                randomColour();
+                //break;
+                //case 2:
+                //break;
+                //default:
+
 
         }
 
@@ -165,22 +166,14 @@ public class Game {
 
     public void randomColour() {
 
-        int j = 0;
-        int R = 0;
-        int J = 0;
-        int V = 0;
-        int B = 0;
-        int N = 0;
-        int G = 0;
-        int total = 0;
         int s = 0;
         int counter = 0;
         char[] colours1 = {'R', 'J', 'V', 'B', 'N', 'G'};
         char[] randomColours = new char[nB];
         char[] rrandomColours = new char[nB];
         char[] responseS = new char[nB];
+        char[] stock = new char[nB];
         System.out.println("La combinaison secrète est : ");
-        System.out.println("Merci de faire une proposition sous le format suivant : R,J,B,R");
         for (int k = 0; k < nB; k++) {
             int bMin = 0;
             int bMax = 5;
@@ -189,42 +182,61 @@ public class Game {
             System.out.print(randomColours[k]);
         }
 
-        Scanner nk = new Scanner(System.in);
-        System.out.println();
-        String response = nk.nextLine();
+            /*System.out.println();
+            System.out.println("Vous avez le droit à 5 essais :");
+            Scanner nk = new Scanner(System.in);
+            String response = nk.nextLine();
 
-        for (int jk = 0; jk < nB; jk++) {
-            responseS[jk] = response.charAt(jk);
-        }
+            for (int jk = 0; jk < nB; jk++) {
+                responseS[jk] = response.charAt(jk);
+            }
 
-        while (response.length() != nB) {
-        System.out.println("Merci de faire une proposition valide : ");
-        randomColour();
-        }
-        char[] testA = {'0', '1', '2', '3', '4'};
-        char[] testB = {'5', '6', '7', '8', '9'};
-        for (int u = 0; u < nB; u++){
+            while (response.length() != nB) {
+                System.out.println("Merci de faire une proposition valide : ");
+                randomColour();
+            }*/
+        //char[] testA = {'0', '1', '2', '3', '4'};
+        //char[] testB = {'5', '6', '7', '8', '9'};
+        for (int u = 0; u < nB; u++) {
             rrandomColours[u] = randomColours[u];
         }
 
-
         //System.out.println(Arrays.toString(responseS));
         //System.out.println(Arrays.toString(randomColours));
-        for (int i = 0; i < nB; i++) {
+
+        for (int om = 0; om < 6; om++) {
+            char[] testA = {'0', '1', '2', '3', '4'};
+            char[] testB = {'5', '6', '7', '8', '9'};
+            System.out.println();
+            System.out.println("Vous avez le droit à 5 essais :");
+            Scanner nk = new Scanner(System.in);
+            String response = nk.nextLine();
+
+            for (int jk = 0; jk < nB; jk++) {
+                responseS[jk] = response.charAt(jk);
+                randomColours[jk] = rrandomColours[jk];
+            }
+
+            while (response.length() != nB) {
+                System.out.println("Merci de faire une proposition valide : ");
+                randomColour();
+            }
+
+            for (int i = 0; i < nB; i++) {
             /*if (randomColours[i] == responseS[i]) {
                 counter++;
                 s++;
             }*/
-            for (int o = 0; o < nB; o++) {
+                for (int o = 0; o < nB; o++) {
 
-                if (randomColours[o] == responseS[i] && o == i) {
-                    counter++;
-                    s++;
-                    responseS[i] = testA[i];
-                    randomColours[o] = testB[o];
+                    if (randomColours[o] == responseS[i] && o == i) {
+                        counter++;
+                        s++;
+                        responseS[i] = testA[i];
+                        randomColours[o] = testB[o];
+                    }
+
                 }
-
-            }
                 /*if (randomColours[o] == responseS[i]) {
 
                     if (randomColours[i] == 'R' && responseS[o] == 'R') {
@@ -260,7 +272,7 @@ public class Game {
                 s++;
             }*/
 
-        }
+            }
             for (int q = 0; q < nB; q++) {
                 for (int r = 0; r < nB; r++) {
 
@@ -284,17 +296,12 @@ public class Game {
                         s++;
                     }
                 }
-            }
-            System.out.print("la réponse était  : ");
-            for (int rep = 0; rep < nB; rep++){
-                System.out.print(rrandomColours[rep]);
+
             }
 
-            System.out.println();
 
-
-                //System.out.println(Arrays.toString(responseS));
-                //System.out.println(Arrays.toString(randomColours));
+            //System.out.println(Arrays.toString(responseS));
+            //System.out.println(Arrays.toString(randomColours));
 
 
 
@@ -353,14 +360,12 @@ public class Game {
         }*/
 
 
-
-                    if (counter == 1) {
-                        System.out.print(counter + " bien placé");
-                    } else {
-                        System.out.print(counter + " bien placés");
-                    }
-                    System.out.print(", " + s + "  présent(s)");
-
+            if (counter == 1) {
+                System.out.print(counter + " bien placé");
+            } else {
+                System.out.print(counter + " bien placés");
+            }
+            System.out.print(", " + s + "  présent(s)");
 
 
 
@@ -377,11 +382,16 @@ public class Game {
 
     }*/
 
+            counter = 0;
+            s = 0;
+        }
 
-
-
+        System.out.print("la réponse était  : ");
+        for (int rep = 0; rep < nB; rep++) {
+            System.out.print(rrandomColours[rep]);
         }
     }
+}
 
 
 
