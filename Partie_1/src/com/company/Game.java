@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Game {
@@ -106,45 +107,68 @@ public class Game {
      * Select game and display it
      */
     public void gameChoise() {
+        int numberGame = 0;
+        boolean numberChoiseIsGood;
+        boolean numberLength;
         System.out.println("Veuillez choisir le jeu que vous voulez lancer : ");
         String[] gameCh = {"Recherche d'une combinaison de chiffre avec indicateurs +/-", "Recherche d'une combinaison de couleurs avec indicateurs de placement - Mastermind"};
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
             System.out.println(i + 1 + " - " + gameCh[i]);
+        do {
+            try {
+                numberGame = sc.nextInt();
+                if (numberGame >= 1 && numberGame <= 2) {
+                    numberChoiseIsGood = true;
+                } else {
+                    numberChoiseIsGood = false;
+                    System.out.println("Vous devez saisir un nombre valide");
+                }
+            } catch (InputMismatchException e) {
+                sc.next();
+                System.out.println("Vous devez saisir un nombre, correspondant au jeu choisi");
+                numberChoiseIsGood = false;
+            }
+        } while (!numberChoiseIsGood);
+        if (numberChoiseIsGood) {
+            do {
+                System.out.println("Veuillez proposer un nombre entre 1 et 5 pour déterminer le nombre de chiffre ou de couleurs de la combinaison à trouver : ");
+                try {
+                    nB = sc.nextInt();
+                    if (nB >= 1 && nB <= 5)
+                        numberLength = true;
+                    else{
+                        numberLength = false;
+                        System.out.println("Vous devez saisir un nombre valide");
+                    }
+                } catch (InputMismatchException e) {
+                    sc.next();
+                    System.out.println("Vous devez saisir un nombre valide");
+                    numberLength = false;
+                }
+            } while (!numberLength);
+            switch (numberGame) {
+                case 1:
+                    this.availableCommand(nB);
+                    int nA = aleatoireNumberAndSelectedNumber(nB);
+                    this.displayPropose(nA);
+                    this.retry();
+                    break;
+                case 2:
+                    this.availableCommand(nB);
+                    this.availableColours();
+                    System.out.println();
+                    System.out.println("Rappel : ");
+                    System.out.println("Les couleurs disponibles sont : R - J - V - B - N - G");
+                    this.randomColour();
+            }
         }
-        int n = sc.nextInt();
-        switch (n) {
-            case 1:
-                System.out.println("Veuillez proposer un nombre entre 1 et 5 pour déterminer le nombre de chiffre de la combinaison à trouver : ");
-                nB = sc.nextInt();
-                this.availableCommand(nB);
-                int nA = aleatoireNumberAndSelectedNumber(nB);
-                displayPropose(nA);
-                retry();
-                break;
-            case 2:
-                System.out.println("Veuillez proposer un nombre entre 1 et 5 pour déterminer le nombre de case de la combinaison de couleurs à trouver : ");
-                nB = sc.nextInt();
-                availableCommand(nB);
-                //System.out.println("Voulez-vous jouer avec des couleurs ou des chiffres ? ");
-                //System.out.println("1 - Combinaison de couleurs");
-                //System.out.println("2 - Combinaison de chiffres");
-                //int nChoise = sc.nextInt();
-                //switch (nChoise) {
-                //case 1:
-                availableColours();
-                System.out.println();
-                System.out.println("Rappel : ");
-                System.out.println("Les couleurs disponibles sont : R - J - V - B - N - G");
-                randomColour();
-                //break;
-                //case 2:
-                //break;
-                //default:
-
-
-        }
-
     }
+
+
+
+
+
+
 
 
     public void gameMode() {
@@ -184,9 +208,8 @@ public class Game {
             randomColours[k] = colours1[nomb];
             System.out.print(randomColours[k]);
         }
-        for (int u = 0; u < nB; u++) {
+        for (int u = 0; u < nB; u++)
             rrandomColours[u] = randomColours[u];
-        }
         for (int om = 0; om < 5; om++) {
             char[] testA = {'0', '1', '2', '3', '4'};
             char[] testB = {'5', '6', '7', '8', '9'};
@@ -247,11 +270,6 @@ public class Game {
             counter = 0;
             s = 0;
             essai--;
-            //System.out.println(OKLM);
-
-            //System.out.println(Arrays.toString(stock));
-            //System.out.println(Arrays.toString(rrandomColours));
-
             for (indice = 0; indice < stock.length && stock[indice] == rrandomColours[indice]; indice++);
 
             if (indice == nB){
@@ -263,12 +281,10 @@ public class Game {
                 break;
             }
         }
-
         if(indice != nB){
-        System.out.print("Malheureusement, vous n'avez pas trouvé la réponse. La réponse était  : ");
-        for (int rep = 0; rep < nB; rep++) {
-            System.out.print(rrandomColours[rep]);
-        }
+            System.out.print("Malheureusement, vous n'avez pas trouvé la réponse. La réponse était  : ");
+            for (int rep = 0; rep < nB; rep++)
+                System.out.print(rrandomColours[rep]);
         }
     }
 }
