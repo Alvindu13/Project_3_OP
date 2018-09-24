@@ -14,6 +14,7 @@ public class Game {
      */
     public void numberRun() {
 
+        gameMode();
         gameChoise();
     }
 
@@ -109,7 +110,12 @@ public class Game {
     }
 
     public void gameMode() {
-        System.out.println("");
+        int choise;
+        String[] arrayMode = {"1 - Mode Challenger : vous devez trouver la combinaison secrète de l'ordinateur", "2 - Mode Défenseur : où c'est à l'ordinateur de trouver votre combinaison secrète ", "3 - Mode duel : où l'ordinateur et vous jouez tour à tour, le premier à trouver la combinaison secrète de l'autre a gagné"};
+        System.out.println("Veuillez choisir le mode de jeu : ");
+        for(int index = 0; index < arrayMode.length; index++)
+            System.out.println(arrayMode[index]);
+        choise = sc.nextInt();
     }
 
 }

@@ -92,7 +92,7 @@ public class Game2Mastermind {
     }
 
     /**
-     * Display available colours 
+     * Display available colours
      */
     public static void availableColours() {
         String[] colours = {"R - Rouge", "J - Jaune", "V - Vert", "B - Bleu", "N - Noir", "G - Gris"};
