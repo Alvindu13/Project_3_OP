@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class Game2Mastermind {
 
+    /**
+     * Create a random array char with colours
+     * @param nB size of array
+     */
     public static void randomColourGame(int nB) {
         int essai = 5;
         int s = 0;
@@ -84,6 +88,24 @@ public class Game2Mastermind {
             System.out.print("Malheureusement, vous n'avez pas trouvé la réponse. La réponse était  : ");
             for (int rep = 0; rep < nB; rep++)
                 System.out.print(rrandomColours[rep]);
+        }
+    }
+
+    /**
+     * Display available colours 
+     */
+    public static void availableColours() {
+        String[] colours = {"R - Rouge", "J - Jaune", "V - Vert", "B - Bleu", "N - Noir", "G - Gris"};
+        System.out.println("Pour prendre connaissance des couleurs disponibles avant de jouer, merci d'entrer V dans le terminal : ");
+        Scanner sc = new Scanner(System.in);
+        String response = sc.nextLine();
+        if ("V".contains(Character.toString(response.charAt(0)))) {
+            System.out.println("Voici les couleurs disponibles : ");
+            for (int i = 1; i <= 6; i++)
+                System.out.println(colours[i - 1]);
+        } else {
+            System.out.println("Je ne comprends pas votre réponse, merci de rentrer une valeur valide");
+            availableColours();
         }
     }
 }
