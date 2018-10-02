@@ -8,12 +8,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.InputMismatchException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Game {
     Game2Mastermind Game2Mastermind = new Game2Mastermind();
     int nbCases;
     int nbTry;
+    int nbAvailableColours;
     char[] formatColoursGame = new char[10];
     Scanner sc = new Scanner(System.in);
 
@@ -93,17 +95,26 @@ public class Game {
         for (int index = 0; index < arrayMode.length; index++)
             System.out.println(arrayMode[index]);
         choise = sc.nextInt();
+
         return choise;
         }
 
 
     public void readParameters(boolean choiseMastermind) {
-        String[] stockColoursAvailable = new String[10];
         try {
-            Reader in = new FileReader("src/main/ressources/config.properties.csv");
-            Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-            String[] couloursAvailable = {"Rouge", "Jaune", "Bleu", "Indigo", "Marron", "Vert", "Gris", "Noir", "Orange", "Pourpre"};
-            for (CSVRecord record : records) {
+            Properties prop = new Properties();
+            prop.load(new FileReader("src/main/resources/config.properties"));
+            this.nbCases = Integer.parseInt(prop.getProperty("nombre.cases"));
+            this.nbTry = Integer.parseInt(prop.getProperty("nombre.essai"));
+            this.nbAvailableColours = Integer.parseInt(prop.getProperty("mastermind.nombre.couleurs"));
+            //System.out.println("properties = " + nbCases + nbTry + nbAvailableColours);
+            //FileReader in = new FileReader("src/main/resources/config.properties");
+
+            String[] coloursAvailable = {"Rouge", "Jaune", "Bleu", "Indigo", "Marron", "Vert", "Gris", "Noir", "Orange", "Pourpre"};
+            String[] stockColoursAvailable = new String[nbAvailableColours];
+
+
+            /*for (CSVRecord record : records) {
                 int nParseCases = Integer.valueOf(record.get("nombreCases"));
                 if (nParseCases > 0)
                     nbCases = nParseCases;
@@ -112,11 +123,12 @@ public class Game {
                     nbTry = nParsebTry;
                 int nColours = Integer.valueOf(record.get("couleurs"));
                 stockColoursAvailable[nColours] = couloursAvailable[nColours];
-            }
+            }*/
             System.out.println(String.format("La taille des combinaisons est de  " + nbCases + " et vous avez le droit à " + nbTry + " essais%n"));
             if (choiseMastermind == true) {
                 System.out.println("Les couleurs disponibles sont : ");
                 for (int index = 1; index <= stockColoursAvailable.length; index++) {
+                    stockColoursAvailable[index-1] = coloursAvailable[index-1] ;
                     if (index < stockColoursAvailable.length)
                         System.out.print(stockColoursAvailable[index - 1] + ", ");
                     else
@@ -125,7 +137,7 @@ public class Game {
                 System.out.println();
                 System.out.println("Pour le jeu, il faudra utiliser le format suivant pour proposer une combinaison : ");
                 for (int index = 1; index <= stockColoursAvailable.length; index++) {
-                    formatColoursGame[index - 1] = couloursAvailable[index - 1].charAt(0);
+                    formatColoursGame[index - 1] = coloursAvailable[index - 1].charAt(0);
                     if (index < formatColoursGame.length)
                         System.out.print(formatColoursGame[index - 1] + ", ");
                     else
