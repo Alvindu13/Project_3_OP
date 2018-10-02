@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -16,13 +17,24 @@ public class Game {
     int nbCases;
     int nbTry;
     int nbAvailableColours;
-    char[] formatColoursGame = new char[10];
+    //char[] formatColoursGame = new char[10];
     Scanner sc = new Scanner(System.in);
+
 
     /**
      * Affiche texte choix de la longueur du chiffre à trouver
      */
     public void numberRun() {
+
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileReader("src/main/resources/config.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.nbCases = Integer.parseInt(prop.getProperty("nombre.cases"));
+        this.nbTry = Integer.parseInt(prop.getProperty("nombre.essai"));
+        this.nbAvailableColours = Integer.parseInt(prop.getProperty("mastermind.nombre.couleurs"));
         int modeGame = gameMode();
         gameChoise(modeGame);
     }
@@ -47,6 +59,7 @@ public class Game {
      * Select game and display it
      */
     public void gameChoise(int gameMode) {
+        char[] formatColoursGame = new char[nbAvailableColours];
         int numberGame = 0;
         boolean whatGame;
         boolean numberChoiseIsGood;
@@ -73,22 +86,24 @@ public class Game {
             switch (numberGame) {
                 case 1:
                     whatGame = false;
-                    this.readParameters(whatGame);
+                    this.readParameters(whatGame, formatColoursGame);
                     Game1.randomNumberAndSelectedNumber(nbCases);
                     this.retry();
                     break;
                 case 2:
                     whatGame = true;
-                    this.readParameters(whatGame);
+                    this.readParameters(whatGame, formatColoursGame);
                     if (gameMode == 1)
                         Game2Mastermind.challengeModeMastermind(nbCases, formatColoursGame);
                     else if(gameMode == 2)
+                        System.out.println(Arrays.toString(formatColoursGame));
                         Game2Mastermind.defenseModeMastermind(nbCases, formatColoursGame);
             }
         }
     }
 
     public int gameMode() {
+
         int choise;
         String[] arrayMode = {"1 - Mode Challenger : vous devez trouver la combinaison secrète de l'ordinateur", "2 - Mode Défenseur : où c'est à l'ordinateur de trouver votre combinaison secrète ", "3 - Mode duel : où l'ordinateur et vous jouez tour à tour, le premier à trouver la combinaison secrète de l'autre a gagné"};
         System.out.println("Veuillez choisir le mode de jeu :");
@@ -100,7 +115,7 @@ public class Game {
         }
 
 
-    public void readParameters(boolean choiseMastermind) {
+    public void readParameters(boolean choiseMastermind, char[] formatColoursGame) {
         try {
             Properties prop = new Properties();
             prop.load(new FileReader("src/main/resources/config.properties"));
@@ -112,7 +127,6 @@ public class Game {
 
             String[] coloursAvailable = {"Rouge", "Jaune", "Bleu", "Indigo", "Marron", "Vert", "Gris", "Noir", "Orange", "Pourpre"};
             String[] stockColoursAvailable = new String[nbAvailableColours];
-
 
             /*for (CSVRecord record : records) {
                 int nParseCases = Integer.valueOf(record.get("nombreCases"));
@@ -137,12 +151,13 @@ public class Game {
                 System.out.println();
                 System.out.println("Pour le jeu, il faudra utiliser le format suivant pour proposer une combinaison : ");
                 for (int index = 1; index <= stockColoursAvailable.length; index++) {
-                    formatColoursGame[index - 1] = coloursAvailable[index - 1].charAt(0);
+                    formatColoursGame[index - 1] = stockColoursAvailable[index - 1].charAt(0);
                     if (index < formatColoursGame.length)
                         System.out.print(formatColoursGame[index - 1] + ", ");
                     else
                         System.out.println(formatColoursGame[index - 1] + ".");
                 }
+                System.out.println("format: " + Arrays.toString(formatColoursGame));
                 System.out.println();
                 System.out.println("Exemple d'une proposition valide : RJBJ équivaut à Rouge, Jaune, Bleu, Jaune \n");
             }
@@ -153,6 +168,17 @@ public class Game {
         }
 
 
+    }
+
+    public int getNbAvailableColours(){
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileReader("src/main/resources/config.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.nbAvailableColours = Integer.parseInt(prop.getProperty("mastermind.nombre.couleurs"));
+        return nbAvailableColours;
     }
 
 

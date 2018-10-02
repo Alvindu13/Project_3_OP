@@ -99,8 +99,7 @@ public class Game2Mastermind {
 
         int goodPlace = 0;
         int counter = 1;
-        int PNP = 0;
-        int indice = 0;
+        int PMP = 0;
         int i0 = 1;
         int i1 = 0;
         int i2 = 0;
@@ -116,7 +115,6 @@ public class Game2Mastermind {
             stockGoodResponse[index] = '0';
         char[] yourColours = new char[nbCases];
         char[] stockRandomColours = new char[nbCases];
-        char[] nextResponse = new char[nbCases];
         char[] stockResponseRandom = new char[nbCases];
         char[] responseRandomPC = new char[nbCases];
         System.out.println("Veuillez rentrer la combinaison que l'ordinateur doit trouver ; ");
@@ -197,7 +195,7 @@ public class Game2Mastermind {
                     if (yourColours[r] == responseRandomPC[q]) {
                         responseRandomPC[q] = Sup1[q];
                         yourColours[r] = Sup2[r];
-                        PNP++;
+                        PMP++;
                     }
                 }
             }
@@ -234,8 +232,9 @@ public class Game2Mastermind {
                         responseRandomPC[i2] = stockGoodResponse[i2];
                     if (i3 == 3)
                         responseRandomPC[i3] = stockGoodResponse[i3];
+
                 }
-           /** } else {
+           /* } else {
                 System.out.println("Réponse du pc else : ");
                 responseRandomPC = randomColours(nbCases, format);
                 for (int count = 0; count < nbCases; count++)
@@ -254,14 +253,14 @@ public class Game2Mastermind {
                 System.out.println("valeur de response indice i2 : " + responseRandomPC[i2]);
                 System.out.println("valeur de response indice i3 : " + responseRandomPC[i3]);
 
-            }**/
+            }*/
 
             for (int index = 0; index < nbCases; index++)
                 yourColours[index] = stockRandomColours[index];
-            System.out.println("PNP = " + PNP +"\n");
+            System.out.println("PNP = " + PMP +"\n");
             essai--;
             counter++;
-            PNP = 0;
+            PMP = 0;
 
         }
 
@@ -290,9 +289,10 @@ public class Game2Mastermind {
     public char[] randomColours(int nbCases, char[] format) {
 
         char[] responseRandomPC = new char[nbCases];
+        Game test = new Game();
         for (int indexColour = 0; indexColour < nbCases; indexColour++) { //génère une série de 4 couleurs aléatoire pour la réponse de l'ordi
             int bMin = 0;
-            int bMax = 10;
+            int bMax = test.getNbAvailableColours();
             int numRandom = (int) (Math.random() * (bMax - bMin)) + bMin;
             responseRandomPC[indexColour] = format[numRandom];
         }
