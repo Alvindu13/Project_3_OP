@@ -1,25 +1,39 @@
 package com.company;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Properties;
 import java.util.Scanner;
 
+import static com.company.Game1.challengeModeGame1;
+import static com.company.Game1.defenseModeGame1;
+
 public class Game {
     Game2Mastermind Game2Mastermind = new Game2Mastermind();
-    int nbCases;
+    private int nbCases;
     int nbTry;
     int nbAvailableColours;
     //char[] formatColoursGame = new char[10];
-    Scanner sc = new Scanner(System.in);
+    public Scanner sc = new Scanner(System.in);
 
+    public Scanner getSc() {
+        return sc;
+    }
+
+
+    public int getNbCases() {
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileReader("src/main/resources/config.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.nbCases = Integer.parseInt(prop.getProperty("nombre.cases"));
+        return nbCases;
+    }
 
     /**
      * Affiche texte choix de la longueur du chiffre à trouver
@@ -87,7 +101,10 @@ public class Game {
                 case 1:
                     whatGame = false;
                     this.readParameters(whatGame, formatColoursGame);
-                    Game1.randomNumberAndSelectedNumber(nbCases);
+                    if(gameMode == 1)
+                        challengeModeGame1();
+                    if(gameMode == 2)
+                        defenseModeGame1();
                     this.retry();
                     break;
                 case 2:
@@ -96,8 +113,8 @@ public class Game {
                     if (gameMode == 1)
                         Game2Mastermind.challengeModeMastermind(nbCases, formatColoursGame);
                     else if(gameMode == 2)
-                        System.out.println(Arrays.toString(formatColoursGame));
                         Game2Mastermind.defenseModeMastermind(nbCases, formatColoursGame);
+                    break;
             }
         }
     }
@@ -157,7 +174,6 @@ public class Game {
                     else
                         System.out.println(formatColoursGame[index - 1] + ".");
                 }
-                System.out.println("format: " + Arrays.toString(formatColoursGame));
                 System.out.println();
                 System.out.println("Exemple d'une proposition valide : RJBJ équivaut à Rouge, Jaune, Bleu, Jaune \n");
             }

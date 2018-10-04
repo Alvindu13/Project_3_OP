@@ -234,30 +234,10 @@ public class Game2Mastermind {
                         responseRandomPC[i3] = stockGoodResponse[i3];
 
                 }
-           /* } else {
-                System.out.println("Réponse du pc else : ");
-                responseRandomPC = randomColours(nbCases, format);
-                for (int count = 0; count < nbCases; count++)
-                    stockResponseRandom = responseRandomPC;
-                if (j0 == true) {
-                    responseRandomPC[i0] = stockGoodResponse[i0];
-                } else if (j1 == true) {
-                    responseRandomPC[i1] = stockGoodResponse[i1];
-                } else if (j2 == true) {
-                    responseRandomPC[i2] = stockGoodResponse[i2];
-                } else if (j3 == true) {
-                    responseRandomPC[i3] = stockGoodResponse[i3];
-                }
-                System.out.println("valeur de response indice i0 : " + responseRandomPC[i0]);
-                System.out.println("valeur de response indice i1 : " + responseRandomPC[i1]);
-                System.out.println("valeur de response indice i2 : " + responseRandomPC[i2]);
-                System.out.println("valeur de response indice i3 : " + responseRandomPC[i3]);
-
-            }*/
 
             for (int index = 0; index < nbCases; index++)
                 yourColours[index] = stockRandomColours[index];
-            System.out.println("PNP = " + PMP +"\n");
+            System.out.println("PMP = " + PMP);
             essai--;
             counter++;
             PMP = 0;
