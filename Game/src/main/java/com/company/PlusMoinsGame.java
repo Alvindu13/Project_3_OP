@@ -1,23 +1,23 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import static java.util.Collections.shuffle;
 
 public class PlusMoinsGame implements GameMode {
 
+
     private int nbCases;
     private int nbTry;
-    private int nbAvailableColours;
     private Scanner sc;
+    private boolean checkAnswer;
 
-
-    public PlusMoinsGame(int nbCases, int nbTry, int nbAvailableColours) {
+    /**
+     * @param nbCases représente la taille de la combi à générer
+     * @param nbTry nombre de tentative possible
+     */
+    public PlusMoinsGame(int nbCases, int nbTry) {
         this.nbCases = nbCases;
         this.nbTry = nbTry;
-        this.nbAvailableColours = nbAvailableColours;
+        this.checkAnswer = false;
         sc = new Scanner(System.in);
     }
 
@@ -35,87 +35,66 @@ public class PlusMoinsGame implements GameMode {
     }
 
     /**
-     * Proposez les propositions pour chercher la combinaison
+     * Mode Challenge, c'est au joueur de proposer des propositions pour trouver la combinaison.
      */
 
     @Override
     public void challengeMode() {
-        int essai = 5;
-        int userProposal;
-        int randomNumber;
-        int i;
+        String myAnswer;
+        String randomNumber;
         System.out.print("Merci faire votre proposition : ");
-        randomNumber = randomNumberAndSelectedNumber(nbCases);
-        System.out.println("random" + randomNumber);
+        randomNumber = String.valueOf(randomNumberAndSelectedNumber(nbCases));
         do {
-            Scanner sc = new Scanner(System.in);
             System.out.println();
-            System.out.println("Il vous reste encore " + essai + " tentatives");
-            userProposal = sc.nextInt();
-            String toStringRandomNumber = String.valueOf(randomNumber);
-            String toStringProposal = String.valueOf(userProposal);
-            System.out.print("Votre proposition : " + userProposal + " -> réponse : ");
-            for (i = 0; i < toStringRandomNumber.length(); i++) {
-                if (toStringProposal.charAt(i) == toStringRandomNumber.charAt(i)) {
-                    System.out.print("=");
-                } else if (toStringProposal.charAt(i) < toStringRandomNumber.charAt(i)) {
-                    System.out.print("+");
-                } else if (toStringProposal.charAt(i) > toStringRandomNumber.charAt(i)) {
-                    System.out.print("-");
-                }
+            System.out.println("Il vous reste encore " + nbTry + " tentatives");
+            myAnswer = sc.nextLine();
+            System.out.print("Votre proposition : " + myAnswer + " -> réponse : ");
+            compareAndDisplayPlacement(myAnswer, randomNumber);
+            if (myAnswer.contains(randomNumber)) {
+                checkAnswer = true;
+                System.out.print("\n" + "Bravo ! Vous avez trouvé la bonne combinaison : " + myAnswer);
             }
-            essai--;
-        } while (userProposal != randomNumber && essai != 0);
-        if (userProposal == randomNumber) {
-            System.out.println();
-            System.out.println("Bravo ! La combinaison secrète était bien " + randomNumber);
-        } else {
+            nbTry--;
+        } while (!checkAnswer && nbTry != 0);
+        if(!checkAnswer){
             System.out.println();
             System.out.println("Malheureusement vous n'avez pas trouvé la bonne combinaison qui était :  " + randomNumber);
         }
     }
 
+    /**
+     * Mode Defense, c'est à l'ordinateur de proposer des propositions pour trouver la combinaison que vous avez proposé.
+     */
 
     @Override
     public void defenseMode() {
-        String yourResponse;
-        String ordiResponse;
-        String verificationResponse;
-        char[] ToCharOrdiResponseGood = new char[4];
-        int intYourResponse;
-        int intOrdiResponse;
+        String yourResponseThatOrdiFind;
+        String ordiAnswer;
         int tentative = 1;
         System.out.print("Merci de choisir le nombre à 4 chiffres que l'ordinateur doit trouver : ");
-        yourResponse = sc.nextLine();
-        System.out.println("L'ordinateur doit retrouver la réponse suivante : " + yourResponse);
-        ordiResponse = String.valueOf(randomNumberAndSelectedNumber(nbCases));
+        yourResponseThatOrdiFind = sc.nextLine();
+        System.out.println("L'ordinateur doit retrouver la réponse suivante : " + yourResponseThatOrdiFind);
         do {
-            System.out.print("Proposition " + tentative + " : " + ordiResponse + " vérification des placemens : ");
-            for (int counter = 1; counter <= 4; counter++) {
-                intYourResponse = Character.digit(yourResponse.charAt(counter - 1), 10);
-                intOrdiResponse = Character.digit(ordiResponse.charAt(counter - 1), 10);
-                if (intYourResponse == intOrdiResponse) {
-                    verificationResponse = "=";
-                    System.out.print(verificationResponse);
-                } else if (intOrdiResponse < intYourResponse) {
-                    verificationResponse = "+";
-                    System.out.print(verificationResponse);
-                } else if (intOrdiResponse > intYourResponse) {
-                    verificationResponse = "-";
-                    System.out.print(verificationResponse);
-                }
-            }
+            ordiAnswer = String.valueOf(randomNumberAndSelectedNumber(nbCases));
+            System.out.print("Proposition " + tentative + " : " + ordiAnswer + " vérification des placements : ");
+            compareAndDisplayPlacement(ordiAnswer, yourResponseThatOrdiFind);
             System.out.println();
-            ordiResponse = String.valueOf(randomNumberAndSelectedNumber(nbCases));
-            ordiResponse.getChars(0, 4, ToCharOrdiResponseGood, 0);
+            if (ordiAnswer.contains(yourResponseThatOrdiFind)) {
+                checkAnswer = true;
+                System.out.print("\n" + "L'ordi a trouvé la bonne combinaison : " + ordiAnswer);
+            }
             tentative++;
-        } while (ordiResponse != yourResponse && tentative < 6);
+        } while (!checkAnswer && tentative < 6);
+        if(!checkAnswer)
+            System.out.print("\n" + "L'ordi n'a pas trouvé la bonne combinaison, qui est : " + yourResponseThatOrdiFind);
     }
 
+    /**
+     * Mode Dual, on alterne entre joueur et l'ordinateur pour trouver une combinaison secrète.
+     */
     @Override
     public void dualMode() {
         int nombre = 0;
-        boolean checkAnswer = false;
         String randomNumberAtFind;
         String myAnswer;
         String ordiAnswer;
@@ -125,16 +104,16 @@ public class PlusMoinsGame implements GameMode {
                 System.out.print("C'est à votre tour : ");
                 myAnswer = sc.nextLine();
                 System.out.print("Votre réponse : " + myAnswer + " -> réponse : ");
-                checkAndDisplayPlacement(myAnswer, randomNumberAtFind);
+                compareAndDisplayPlacement(myAnswer, randomNumberAtFind);
                 if (myAnswer.contains(randomNumberAtFind)) {
                     checkAnswer = true;
                     System.out.print("\n" + "Bravo vous avez trouvé la bonne combinaison : " + myAnswer);
                 }
             } else {
                 System.out.println("C'est au tour de l'ordinateur ! ");
-                ordiAnswer = String.valueOf(randomNumberAndSelectedNumber(4));
+                ordiAnswer = String.valueOf(randomNumberAndSelectedNumber(nbCases));
                 System.out.print("L'ordinateur propose : " + ordiAnswer + " -> réponse : ");
-                checkAndDisplayPlacement(ordiAnswer, randomNumberAtFind);
+                compareAndDisplayPlacement(ordiAnswer, randomNumberAtFind);
                 if (ordiAnswer.contains(randomNumberAtFind)) {
                     checkAnswer = true;
                     System.out.print("\n" + "C'est l'ordi qui a trouvé la bonne combinaison : " + ordiAnswer);
@@ -143,12 +122,15 @@ public class PlusMoinsGame implements GameMode {
             nombre++;
             System.out.println("\n");
         } while (!checkAnswer);
-
-
-
     }
 
-    public void checkAndDisplayPlacement(String answer, String combinaison) {
+    /**
+     * Compare la réponse à la combinaison et affiche des indications de placements +/-.
+     * @param answer votre réponse ou celle de l'ordinateur selon le jeu.
+     * @param combinaison la combinaison secrète
+     */
+
+    public void compareAndDisplayPlacement(String answer, String combinaison) {
         for (int i = 0; i < answer.length(); i++) {
             if (answer.charAt(i) == combinaison.charAt(i)) {
                 System.out.print("=");
@@ -159,5 +141,7 @@ public class PlusMoinsGame implements GameMode {
             }
         }
     }
+
+
 }
 

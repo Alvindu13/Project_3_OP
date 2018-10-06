@@ -78,7 +78,7 @@ public class GameSelector {
         } while (!numberChoiseIsGood);
         if (numberChoiseIsGood) {
             this.readParameters();
-            plusMoinsGame = new PlusMoinsGame(nbCases, nbTry, nbAvailableColours);
+            plusMoinsGame = new PlusMoinsGame(nbCases, nbTry);
             if(numberGame == 1 && gameMode ==1)
                 plusMoinsGame.challengeMode();
             else if(numberGame == 1 && gameMode == 2)
