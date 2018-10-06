@@ -23,11 +23,12 @@ public class PlusMoinsGame implements GameMode {
 
     /**
      * Calcul un nombre aléatoire de nB chiffre(s) et le return
+     *
      * @param nbCases représente la taille de la combi à générer
      * @return le nombre aléatoire généré de nB chiffre(s)
      */
     public int randomNumberAndSelectedNumber(int nbCases) { //revoir cette méthode
-        int bMin = (int) Math.pow(10, nbCases-1);
+        int bMin = (int) Math.pow(10, nbCases - 1);
         int bMax = (int) Math.pow(10, nbCases);
         int randomNumber = (int) (Math.random() * (bMax - bMin)) + bMin;
         return randomNumber;
@@ -90,7 +91,7 @@ public class PlusMoinsGame implements GameMode {
         ordiResponse = String.valueOf(randomNumberAndSelectedNumber(nbCases));
         do {
             System.out.print("Proposition " + tentative + " : " + ordiResponse + " vérification des placemens : ");
-            for(int counter = 1; counter <= 4; counter++) {
+            for (int counter = 1; counter <= 4; counter++) {
                 intYourResponse = Character.digit(yourResponse.charAt(counter - 1), 10);
                 intOrdiResponse = Character.digit(ordiResponse.charAt(counter - 1), 10);
                 if (intYourResponse == intOrdiResponse) {
@@ -108,28 +109,55 @@ public class PlusMoinsGame implements GameMode {
             ordiResponse = String.valueOf(randomNumberAndSelectedNumber(nbCases));
             ordiResponse.getChars(0, 4, ToCharOrdiResponseGood, 0);
             tentative++;
-        }while(ordiResponse != yourResponse && tentative < 6);
+        } while (ordiResponse != yourResponse && tentative < 6);
     }
 
     @Override
     public void dualMode() {
-        int nombre = 1;
-        //List<Character> myRespList = new ArrayList<Character>();
-        //shuffle(myRespList);
-
+        int nombre = 0;
+        boolean checkAnswer = false;
         String randomNumberAtFind;
         String myAnswer;
         String ordiAnswer;
         randomNumberAtFind = String.valueOf(randomNumberAndSelectedNumber(nbCases));
-
         do {
             if (nombre % 2 == 0) {
-
+                System.out.print("C'est à votre tour : ");
+                myAnswer = sc.nextLine();
+                System.out.print("Votre réponse : " + myAnswer + " -> réponse : ");
+                checkAndDisplayPlacement(myAnswer, randomNumberAtFind);
+                if (myAnswer.contains(randomNumberAtFind)) {
+                    checkAnswer = true;
+                    System.out.print("\n" + "Bravo vous avez trouvé la bonne combinaison : " + myAnswer);
+                }
             } else {
+                System.out.println("C'est au tour de l'ordinateur ! ");
+                ordiAnswer = String.valueOf(randomNumberAndSelectedNumber(4));
+                System.out.print("L'ordinateur propose : " + ordiAnswer + " -> réponse : ");
+                checkAndDisplayPlacement(ordiAnswer, randomNumberAtFind);
+                if (ordiAnswer.contains(randomNumberAtFind)) {
+                    checkAnswer = true;
+                    System.out.print("\n" + "C'est l'ordi qui a trouvé la bonne combinaison : " + ordiAnswer);
+                }
             }
             nombre++;
+            System.out.println("\n");
+        } while (!checkAnswer);
 
-        }while(randomNumberAtFind == "0");
+
+
+    }
+
+    public void checkAndDisplayPlacement(String answer, String combinaison) {
+        for (int i = 0; i < answer.length(); i++) {
+            if (answer.charAt(i) == combinaison.charAt(i)) {
+                System.out.print("=");
+            } else if (answer.charAt(i) < combinaison.charAt(i)) {
+                System.out.print("+");
+            } else if (answer.charAt(i) > combinaison.charAt(i)) {
+                System.out.print("-");
+            }
+        }
     }
 }
 

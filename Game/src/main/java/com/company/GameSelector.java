@@ -81,8 +81,10 @@ public class GameSelector {
             plusMoinsGame = new PlusMoinsGame(nbCases, nbTry, nbAvailableColours);
             if(numberGame == 1 && gameMode ==1)
                 plusMoinsGame.challengeMode();
-            else if(numberGame == 1 && gameMode ==2)
+            else if(numberGame == 1 && gameMode == 2)
                 plusMoinsGame.defenseMode();
+            else if(numberGame == 1 && gameMode == 3)
+                plusMoinsGame.dualMode();
             if(numberGame == 2 && gameMode == 1) {
                 mastermindGame = new MastermindGame(nbCases, nbTry, nbAvailableColours);
                 mastermindGame.challengeMode();
