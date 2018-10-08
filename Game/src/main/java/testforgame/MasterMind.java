@@ -1,39 +1,70 @@
-package com.company.test;
+package testforgame;
 
-import com.company.GameSelector;
+import com.company.test.TestDualMode;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.util.Collections.shuffle;
 
-public class TestDualMode {
+public class MasterMind {
 
+    private static final Object List = Arrays.asList('R', 'J', 'B');
     Scanner sc = new Scanner(System.in);
     List<Character> colours = new ArrayList<Character>();
     List<Character> Colourss = Arrays.asList('R', 'J', 'B', 'I', 'M', 'V', 'G', 'N', 'O', 'P');
     List<Character> myResponse = new ArrayList<Character>();
     String myResp;
+    static char t;
 
     public static void main(String[] args) {
-        TestDualMode test = new TestDualMode();
-        test.colours = test.randomColours();
-        System.out.print("valeur de randomColours : " );
-        for(char s : test.colours){
-            System.out.print(s);
+        List<Character> nums3 = new ArrayList();
+        nums3.add('R');
+        nums3.add('J');
+
+        nums3.remove(0);
+        MasterMind test = new MasterMind();
+        System.out.println("Colours" + nums3);
+
+        List<Character> nums = new ArrayList();
+        nums.add('J');
+        nums.add('R');
+        nums.add('V');
+        nums.add('V');
+
+        List<Character> nums2 = new ArrayList();
+        nums2.add('J');
+        nums2.add('J');
+        nums2.add('R');
+        nums2.add('B');
+        // create an empty array list
+        System.out.println("test : " + nums);
+        System.out.println(nums.get(1));
+        System.out.println(nums2.get(1));
+
+        Iterator<Character> it = nums.iterator();
+         while (it.hasNext()) {
+            Character integer = it.next();
+            if (nums.get(0) == nums2.get(0)) {
+                it.remove();
+                //it2.remove();
+            }
         }
-        System.out.println();
-        test.myResponse = test.myResponseList();
-        System.out.print("valeur de myRep : " );
-        for(char s : test.myResponse){
-            System.out.print(s);
+        Iterator<Character> it2 = nums.iterator();
+        System.out.println("test : " + nums);
+        System.out.println("test : " + nums2);
+
+
+        while (it2.hasNext()) {
+            Character integer2 = it2.next();
+            if (nums.get(0) == nums2.get(2)) {
+                it2.remove();
+            }
         }
-        System.out.println();
-        test.compareListAndRemove(test.myResponse, test.colours);
-        //test.randomListAfterGenerated();
+        System.out.println("test : " + nums);
+        System.out.println("test : " + nums2);
+
+
     }
 
     public void dualModeMasterMind() {
@@ -54,14 +85,14 @@ public class TestDualMode {
         return colours;
     }
 
-    public void randomListAfterGenerated(){
+    public void randomListAfterGenerated() {
         shuffle(colours);
-        for(char s : colours){
+        for (char s : colours) {
             System.out.print(s);
         }
     }
 
-    public List myResponseList(){
+    public List myResponseList() {
         System.out.println("Entrez votre réponse : ");
         myResp = sc.nextLine();
         myResponse = Arrays.asList(myResp.charAt(0), myResp.charAt(1), myResp.charAt(2), myResp.charAt(3));
@@ -71,41 +102,32 @@ public class TestDualMode {
     public void compareListAndRemove(List<Character> myResponseZ, List<Character> coloursZ) {
         int present = 0;
         int findGoodAnswer = 0;
-        int[] stockIndice = new int[]{0 , 1, 2, 3};
-        int remove = 0;
         List<Character> transfert1 = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7');
         List<Character> transfert2 = Arrays.asList('8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
-        List<Character> nums3MyResp = new ArrayList();
+        int stockIndice = 0;
+        int[] StockIndice = new int[4];
+        List<Character> StockMyresponse = myResponse;
 
-        for(int index = 0; index < 4; index++){
-            nums3MyResp.add(myResponse.get(index));
-        }
-
-        System.out.print("test + " + nums3MyResp);
-
-        for(int index = 0; index < 4; index++){
-            System.out.println(nums3MyResp);
-            nums3MyResp.remove(stockIndice[index-remove]);
-            remove++;
-        }
-
-        System.out.print("test + " + nums3MyResp);
-
-
-        System.out.println();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < myResponseZ.size(); i++) {
             if (coloursZ.contains(myResponseZ.get(i))) {
 
                 if (myResponseZ.get(i) == coloursZ.get(i)) {
-                    myResponseZ.set(i, transfert1.get(i));
-                    coloursZ.set(i, transfert2.get(i));
                     findGoodAnswer++;
                     present++;
+                    StockIndice[i] = i;
+                    stockIndice++;
                 }
             } else
-                System.out.println("La couleur " + myResponseZ.get(i) + " ne se trouve pas dans la combinaison");
-
+                System.out.println("La couleur " + StockMyresponse.get(i) + " ne se trouve pas dans la combinaison");
+            if(i == myResponseZ.size())
+                break;
         }
+            myResponseZ.remove(0);
+
+
+        for( Character a : myResponseZ)
+            System.out.println(a);
+
         for (int i = 0; i < 4; i++) {
             for (int o = 0; o < 4; o++) {
                 boolean find = false;
@@ -122,13 +144,7 @@ public class TestDualMode {
 
             }
         }
-            System.out.println("Bien placé : " + findGoodAnswer);
-            System.out.println("Présent(s) : " + (present-findGoodAnswer));
-    }
-
-
-
-    public void removeList(){
-
+        System.out.println("Bien placé : " + findGoodAnswer);
+        System.out.println("Présent(s) : " + (present - findGoodAnswer));
     }
 }

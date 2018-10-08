@@ -102,7 +102,7 @@ public class MastermindGame implements GameMode{
                 System.out.println("Merci de faire une proposition valide : ");
                 challengeMode();
             }
-            for (int i = 0; i < nbCases; i++) { //Je pense qu'un des for est useless, à voir
+            for (int i = 0; i < nbCases; i++) {
                 if (randomColours[i] == responseToChar[i] && i == i) {
                     counter++;
                     s++;
@@ -290,6 +290,7 @@ public class MastermindGame implements GameMode{
 
     @Override
     public void dualMode() {
+        System.out.print("Faites votre proposition : ");
 
     }
 }
