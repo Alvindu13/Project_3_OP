@@ -1,6 +1,8 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class MastermindGame implements GameMode{
@@ -8,40 +10,53 @@ public class MastermindGame implements GameMode{
     private int nbTry;
     private int nbAvailableColours;
     private Scanner sc;
+    private String[] coloursAvailable;
+    private List<Character> combinaisonSecrete = new ArrayList();
     private char[] formatColoursGame;
+    private String myAnswer;
+    private List<Character> formatColoursGames;
+    private List<Character> myResponseToList;
+
 
 
     public MastermindGame( int nbCases, int nbTry, int nbAvailableColours) {
         this.nbCases = nbCases;
         this.nbTry = nbTry;
         this.nbAvailableColours = nbAvailableColours;
-        sc = new Scanner(System.in);
-        formatColoursGame = new char[nbAvailableColours];
-        displayAvailableColours();
+        this.sc = new Scanner(System.in);
+        this.formatColoursGames = Arrays.asList('R', 'J', 'B', 'I', 'M', 'V', 'G', 'N', 'O', 'P');
+        this.formatColoursGame = new char[]{'R', 'J', 'B', 'I', 'M', 'V', 'G', 'N', 'O', 'P'};
+        this.coloursAvailable = new String[nbAvailableColours];
+        this.myAnswer = "";
+        this.myResponseToList = new ArrayList();
+        this.displayAvailableColours();
+
+
     }
 
-    private void displayAvailableColours(){
-        
-        String[] coloursAvailable = {"Rouge", "Jaune", "Bleu", "Indigo", "Marron", "Vert", "Gris", "Noir", "Orange", "Pourpre"};
-        String[] stockColoursAvailable = new String[nbAvailableColours];
+    private void displayAvailableColours() {
 
-        System.out.println(String.format("La taille des combinaisons est de  " + nbCases + " et vous avez le droit à " + nbTry + " nbTrys%n"));
-            System.out.println("Les couleurs disponibles sont : ");
-            for (int index = 1; index <= stockColoursAvailable.length; index++) {
-                stockColoursAvailable[index-1] = coloursAvailable[index-1] ;
-                if (index < stockColoursAvailable.length)
-                    System.out.print(stockColoursAvailable[index - 1] + ", ");
-                else
-                    System.out.println(stockColoursAvailable[index - 1] + ".");
-            }
+        List<String> coloursAvailable = Arrays.asList("Rouge", "Jaune", "Bleu", "Indigo", "Marron", "Vert", "Gris", "Noir", "Orange", "Pourpre");
+        List<String> stockColoursAvailable = new ArrayList();
+
+        System.out.println(String.format("La taille des combinaisons est de  " + nbCases + " et vous avez le droit à " + nbTry + " tentatives %n"));
+        System.out.println("Les couleurs disponibles sont : ");
+        for (int indexColours = 1; indexColours <= nbAvailableColours; indexColours++)
+            stockColoursAvailable.add(indexColours - 1, coloursAvailable.get(indexColours - 1));
+        System.out.println(stockColoursAvailable);
+        for (int indexColours = 1; indexColours <= nbAvailableColours; indexColours++){
+            if (indexColours < nbAvailableColours)
+                System.out.print(stockColoursAvailable.get(indexColours - 1) + ", ");
+            else
+                System.out.println(stockColoursAvailable.get(indexColours - 1) + ".");
+        }
             System.out.println();
             System.out.println("Pour le jeu, il faudra utiliser le format suivant pour proposer une combinaison : ");
-            for (int index = 1; index <= stockColoursAvailable.length; index++) {
-                formatColoursGame[index - 1] = stockColoursAvailable[index - 1].charAt(0);
-                if (index < formatColoursGame.length)
-                    System.out.print(formatColoursGame[index - 1] + ", ");
+            for (int index = 1; index <= stockColoursAvailable.size(); index++) {
+                if (index < nbAvailableColours)
+                    System.out.print(formatColoursGames.get(index - 1) + ", ");
                 else
-                    System.out.println(formatColoursGame[index - 1] + ".");
+                    System.out.println(formatColoursGames.get(index - 1) + ".");
             }
             System.out.println();
             System.out.println("Exemple d'une proposition valide : RJBJ équivaut à Rouge, Jaune, Bleu, Jaune \n");
@@ -68,9 +83,141 @@ public class MastermindGame implements GameMode{
 
     }
 
+    public List randomColours() {
+        for (int indexColour = 0; indexColour < 4; indexColour++) { //génère une série de 4 couleurs aléatoire pour la réponse de l'ordi
+            int bMin = 0;
+            int bMax = nbAvailableColours;
+            int numRandom = (int) (Math.random() * (bMax - bMin)) + bMin;
+            this.combinaisonSecrete.add(formatColoursGames.get(numRandom));
+        }
+        System.out.println(combinaisonSecrete);
+        return combinaisonSecrete;
+    }
+
+    public List myResponseList(){
+        System.out.println("Entrez votre réponse : ");
+        myAnswer = sc.nextLine();
+        for(int indexColours = 0; indexColours < nbAvailableColours; indexColours++)
+            myResponseToList = Arrays.asList(myAnswer.charAt(indexColours));
+        return myResponseToList;
+    }
+
     @Override
     public void challengeMode() {
-        int s = 0;
+
+
+        List<Character> myResponse = new ArrayList();
+        List<Character> combinaisonSecrete = new ArrayList();
+        List<Character> stockCombinaisonSecrete = new ArrayList();
+        List<Character> stockMyResponse = new ArrayList();
+
+        String myAnswer = "";
+        String combinaison = "";
+        combinaisonSecrete = randomColours();
+
+        for(int index = 0; index < nbCases; index++) {
+            stockCombinaisonSecrete.add(index, combinaisonSecrete.get(index));
+            combinaison += combinaisonSecrete.get(index);
+        }
+
+        System.out.println(combinaison);
+
+        while(!myAnswer.contains(combinaison) && nbTry > 0) {
+            int remove = 0;
+            int goodplace = 0;
+            int remove2 = 0;
+            int PMP = 0;
+            int i = 0;
+            int o = 0;
+            int[] StockIndice = new int[4];
+            int stockInd1 = 0;
+            int stockInd2 = 0;
+            int z = 0;
+            int b = 0;
+            int p = 0;
+            myResponse.clear();
+            combinaisonSecrete.clear();
+            for(int index = 0; index < nbCases; index++)
+                combinaisonSecrete.add(index,stockCombinaisonSecrete.get(index));
+            System.err.println("Il vous reste encore " + nbTry + " tentatives !!!");
+            System.out.println("Merci de proposer une combinaison de couleurs : ");
+            myAnswer = sc.nextLine();
+            for (int index = 0; index < nbCases; index++) {
+                myResponse.add(index, myAnswer.charAt(index));
+                stockMyResponse.add(index, myResponse.get(index));
+            }
+            for (int j = 0; j < nbCases; j++) {
+                if (combinaisonSecrete.isEmpty() && myResponse.isEmpty())
+                    break;
+                int k;
+                int h = 0;
+                k = j - remove;
+                if (myResponse.get(k) == combinaisonSecrete.get(k)) {
+                    combinaisonSecrete.remove(k);
+                    myResponse.remove(k);
+                    remove++;
+                    goodplace++;
+                }
+                for (int l = 0; l < combinaisonSecrete.size(); l++) {
+                    if (combinaisonSecrete.get(l) != myResponse.get(l))
+                        h++;
+                }
+                p = h;
+                if (h == combinaisonSecrete.size())
+                    break;
+            }
+            while (i < p) {
+                for (o = 0; o < p; o++) {
+                    z = 0;
+                    if (i - remove2 < 0)
+                        i = 0;
+                    else
+                        i -= remove2;
+                    for (int joe = 0; joe < p - remove2; joe++) {
+                        if (!myResponse.contains(combinaisonSecrete.get(joe))) {
+                            z++;
+                        }
+                    }
+                    if (z == combinaisonSecrete.size()) {
+                        i = p;
+                        break;
+                    }
+                    if (combinaisonSecrete.isEmpty() && myResponse.isEmpty())
+                        break;
+                    if (o - remove2 < 0) {
+                        b = 0;
+                    } else
+                        b = o - remove2;
+                    if (myResponse.get(i) == combinaisonSecrete.get(b)) {
+                        stockInd2 = o - remove2;
+                        if (i - remove2 < 0)
+                            stockInd1 = 0;
+                        if (o - remove2 < 0)
+                            stockInd2 = 0;
+                        myResponse.remove(i);
+                        combinaisonSecrete.remove(stockInd2);
+                        remove2++;
+                        PMP++;
+
+                    }
+                }
+                i++;
+            }
+            System.out.println("Votre proposition : " + myAnswer + " => " + goodplace + " bien placé, " + PMP + " présent(s)");
+            nbTry--;
+
+        }
+
+        if(myResponse != combinaisonSecrete)
+            System.out.println("Bravo vous avez trouvé la combinaison secrète !!! " + myAnswer);
+        else
+            System.out.println("Dommage... Vous n'avez pas trouvé la bonne combinaison. C'était :  " + stockCombinaisonSecrete);
+
+
+
+
+
+       /* int s = 0;
         int indice = 0;
         int counter = 0;
         char[] randomColours = new char[nbCases];
@@ -146,7 +293,7 @@ public class MastermindGame implements GameMode{
             System.out.print("Malheureusement, vous n'avez pas trouvé la réponse. La réponse était  : ");
             for (int rep = 0; rep < nbCases; rep++)
                 System.out.print(stockRandomColours[rep]);
-        }
+        }*/
     }
 
 
@@ -250,7 +397,7 @@ public class MastermindGame implements GameMode{
                 System.out.println();
                 System.out.print("réponse du PC " + counter + " : ");
                 System.out.println(Arrays.toString(responseRandomPC));
-                responseRandomPC = randomColours(nbCases, formatColoursGame );
+                responseRandomPC = randomColours(nbCases, formatColoursGame);
                 if (i0 == 0)
                     responseRandomPC[i0] = stockGoodResponse[i0];
                 if (i1 == 1)

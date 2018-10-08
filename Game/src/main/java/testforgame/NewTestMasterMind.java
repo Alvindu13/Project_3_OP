@@ -27,15 +27,15 @@ public class NewTestMasterMind {
 
         List<Character> nums = new ArrayList();
         nums.add('R');
-        nums.add('T');
         nums.add('R');
+        nums.add('B');
         nums.add('R');
 
         List<Character> nums2 = new ArrayList();
-        nums2.add('N');
+        nums2.add('B');
         nums2.add('R');
         nums2.add('R');
-        nums2.add('R');
+        nums2.add('E');
 
         nums3 = nums;
         nums4 = nums2;
@@ -94,24 +94,31 @@ public class NewTestMasterMind {
             System.out.println("test dans boucle o : " + nums2);
             System.out.println("p" + p);
 
-            while( i < 2) {
+            while( i < p) {
                 for (o = 0; o < p; o++) {
                     z = 0;
-                    System.out.println("i " + i + "o : " + o);
+                    if(i - remove2 < 0)
+                        i = 0;
+                    else
+                        i -= remove2;
+                    System.out.println("i " + i + " o : " + o +" z + " +z);
                     //System.out.println("z " + z);
-                    if(i == nums.size()){
+                    for(int joe = 0; joe < p - remove2; joe++) {
+                        if (!nums2.contains(nums.get(joe))) {
+                            z++;
+                        }
+                    }
+                    System.out.println("i " + i + " o : " + o +" z + " +z);
+
+
+                    if(z == nums.size()) {
+                        i = p;
                         break;
                     }
 
-
-                    if (!nums2.contains(nums.get(i))) {
-                        z++;
-                    }
 
                     System.out.println("numsize " + nums.size());
-                    if (z == nums.size()) {
-                        break;
-                    }
+
 
 
 
